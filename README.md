@@ -18,3 +18,39 @@ The Supermarket Management System is a comprehensive web-based application desig
 - Database: MySQL
 - Authentication: JWT
 - Reporting: JasperReports
+
+## Features Highlights
+- 🛒 **Real-time Inventory**: Track stock levels with automatic low-stock alerts
+- 💰 **Fast POS**: Quick checkout with barcode scanning support
+- 📊 **Analytics Dashboard**: Visual insights into sales and profits
+- 👥 **Multi-user Support**: Role-based access for different staff levels
+- 📦 **Supplier Management**: Streamline purchase orders and deliveries
+
+## Installation
+```bash
+# Clone the repository
+git clone https://github.com/YOUR_USERNAME/Supermarket-Management-System.git
+
+# Backend setup
+cd backend
+./mvnw spring-boot:run
+
+# Frontend setup
+cd frontend
+npm install
+npm start
+```
+
+## Contributing
+We welcome contributions! Please follow these steps:
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+This project is licensed under the MIT License.
+
+## Contact
+For questions or suggestions, please open an issue on GitHub.
