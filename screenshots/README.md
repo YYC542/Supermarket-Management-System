@@ -1,9 +1,9 @@
 # Screenshots
 
-## 测试结果截图
+## Screenshot of test results
 
-本文件夹包含GitHub Actions自动化测试的截图证明。
+This folder contains screenshots demonstrating the automated testing capabilities of GitHub Actions.
 
-### 文件说明
-- `github-actions-success.png` - GitHub Actions测试通过的截图
-- `repository-structure.png` - 仓库文件结构截图
+### Document Description
+- `github-actions-success.png` - GitHub Actions Screenshot of the test passed
+- `repository-structure.png` - Screenshot of the warehouse file structure
