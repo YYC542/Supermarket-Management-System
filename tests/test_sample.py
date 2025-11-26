@@ -1,76 +1,211 @@
 """
-简单的测试示例 - 超市管理系统
-这个文件包含基本的单元测试来验证系统核心功能
+Unit Tests for Supermarket Management System
+Tests for Product and ProductManager classes
 """
 
-def add(a, b):
-    """加法函数"""
-    return a + b
+import sys
+import os
 
-def multiply(a, b):
-    """乘法函数"""
-    return a * b
+# Add src directory to path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-def calculate_total(price, quantity):
-    """计算商品总价"""
-    return price * quantity
-
-def apply_discount(total, discount_percent):
-    """应用折扣"""
-    return total * (1 - discount_percent / 100)
+from product import Product, ProductManager
 
 
-# 测试函数
-def test_add():
-    """测试加法功能"""
-    assert add(2, 3) == 5
-    assert add(0, 0) == 0
-    assert add(-1, 1) == 0
-    print("✓ 加法测试通过")
+# ========== Product Class Tests ==========
 
-def test_multiply():
-    """测试乘法功能"""
-    assert multiply(3, 4) == 12
-    assert multiply(0, 5) == 0
-    assert multiply(-2, 3) == -6
-    print("✓ 乘法测试通过")
-
-def test_calculate_total():
-    """测试计算总价功能"""
-    assert calculate_total(10, 5) == 50
-    assert calculate_total(25.5, 2) == 51.0
-    assert calculate_total(100, 0) == 0
-    print("✓ 总价计算测试通过")
-
-def test_apply_discount():
-    """测试折扣功能"""
-    assert apply_discount(100, 10) == 90  # 10% 折扣
-    assert apply_discount(50, 20) == 40   # 20% 折扣
-    assert apply_discount(200, 0) == 200  # 无折扣
-    print("✓ 折扣计算测试通过")
-
-def test_supermarket_scenario():
-    """测试完整的超市购物场景"""
-    # 商品单价
-    item_price = 25.00
-    # 购买数量
-    quantity = 3
-    # 计算小计
-    subtotal = calculate_total(item_price, quantity)
-    assert subtotal == 75.00
+def test_product_creation():
+    """Test creating a product instance"""
+    product = Product("P001", "Apple", 1.50, 100, "Fruits")
     
-    # 应用15%的会员折扣
-    final_total = apply_discount(subtotal, 15)
-    assert final_total == 63.75
+    assert product.product_id == "P001"
+    assert product.name == "Apple"
+    assert product.price == 1.50
+    assert product.quantity == 100
+    assert product.category == "Fruits"
+    print("✓ Product creation test passed")
+
+
+def test_product_update_quantity():
+    """Test updating product quantity"""
+    product = Product("P002", "Banana", 0.80, 50)
     
-    print("✓ 超市购物场景测试通过")
+    # Add stock
+    new_qty = product.update_quantity(30)
+    assert new_qty == 80
+    assert product.quantity == 80
+    
+    # Remove stock
+    new_qty = product.update_quantity(-20)
+    assert new_qty == 60
+    assert product.quantity == 60
+    
+    print("✓ Product quantity update test passed")
 
 
-# 如果直接运行这个文件
+def test_product_is_in_stock():
+    """Test checking if product is in stock"""
+    product1 = Product("P003", "Orange", 2.00, 10)
+    product2 = Product("P004", "Mango", 3.00, 0)
+    
+    assert product1.is_in_stock() == True
+    assert product2.is_in_stock() == False
+    
+    print("✓ Product stock check test passed")
+
+
+def test_product_calculate_total_value():
+    """Test calculating total value of product"""
+    product = Product("P005", "Milk", 4.50, 20)
+    
+    total_value = product.calculate_total_value()
+    assert total_value == 90.0  # 4.50 * 20
+    
+    print("✓ Product total value calculation test passed")
+
+
+# ========== ProductManager Class Tests ==========
+
+def test_product_manager_add_product():
+    """Test adding products to manager"""
+    manager = ProductManager()
+    product = Product("P006", "Bread", 2.50, 30)
+    
+    result = manager.add_product(product)
+    assert result == True
+    assert len(manager.products) == 1
+    
+    print("✓ ProductManager add product test passed")
+
+
+def test_product_manager_duplicate_product():
+    """Test that duplicate product IDs are rejected"""
+    manager = ProductManager()
+    product1 = Product("P007", "Cheese", 5.00, 15)
+    product2 = Product("P007", "Different Cheese", 6.00, 20)
+    
+    manager.add_product(product1)
+    
+    try:
+        manager.add_product(product2)
+        assert False, "Should have raised ValueError"
+    except ValueError as e:
+        assert "already exists" in str(e)
+        print("✓ ProductManager duplicate prevention test passed")
+
+
+def test_product_manager_get_product():
+    """Test retrieving a product by ID"""
+    manager = ProductManager()
+    product = Product("P008", "Eggs", 3.00, 50)
+    manager.add_product(product)
+    
+    retrieved = manager.get_product("P008")
+    assert retrieved is not None
+    assert retrieved.name == "Eggs"
+    
+    # Test non-existent product
+    non_existent = manager.get_product("P999")
+    assert non_existent is None
+    
+    print("✓ ProductManager get product test passed")
+
+
+def test_product_manager_remove_product():
+    """Test removing a product"""
+    manager = ProductManager()
+    product = Product("P009", "Butter", 4.00, 25)
+    manager.add_product(product)
+    
+    result = manager.remove_product("P009")
+    assert result == True
+    assert len(manager.products) == 0
+    
+    # Try removing non-existent product
+    result = manager.remove_product("P009")
+    assert result == False
+    
+    print("✓ ProductManager remove product test passed")
+
+
+def test_product_manager_update_stock():
+    """Test updating stock through manager"""
+    manager = ProductManager()
+    product = Product("P010", "Rice", 10.00, 100)
+    manager.add_product(product)
+    
+    result = manager.update_stock("P010", 50)
+    assert result == True
+    assert product.quantity == 150
+    
+    # Test non-existent product
+    result = manager.update_stock("P999", 10)
+    assert result == False
+    
+    print("✓ ProductManager update stock test passed")
+
+
+def test_product_manager_search_by_category():
+    """Test searching products by category"""
+    manager = ProductManager()
+    manager.add_product(Product("P011", "Apple", 1.50, 100, "Fruits"))
+    manager.add_product(Product("P012", "Banana", 0.80, 50, "Fruits"))
+    manager.add_product(Product("P013", "Milk", 4.50, 20, "Dairy"))
+    
+    fruits = manager.search_by_category("Fruits")
+    assert len(fruits) == 2
+    
+    dairy = manager.search_by_category("Dairy")
+    assert len(dairy) == 1
+    
+    print("✓ ProductManager search by category test passed")
+
+
+def test_product_manager_low_stock_products():
+    """Test finding low stock products"""
+    manager = ProductManager()
+    manager.add_product(Product("P014", "Item1", 1.00, 5))   # Low stock
+    manager.add_product(Product("P015", "Item2", 2.00, 15))  # Normal stock
+    manager.add_product(Product("P016", "Item3", 3.00, 8))   # Low stock
+    
+    low_stock = manager.get_low_stock_products(threshold=10)
+    assert len(low_stock) == 2
+    
+    print("✓ ProductManager low stock detection test passed")
+
+
+def test_product_manager_total_inventory_value():
+    """Test calculating total inventory value"""
+    manager = ProductManager()
+    manager.add_product(Product("P017", "Item1", 10.00, 5))   # Value: 50
+    manager.add_product(Product("P018", "Item2", 20.00, 3))   # Value: 60
+    manager.add_product(Product("P019", "Item3", 5.00, 10))   # Value: 50
+    
+    total_value = manager.get_total_inventory_value()
+    assert total_value == 160.0
+    
+    print("✓ ProductManager total inventory value test passed")
+
+
+# Run all tests if executed directly
 if __name__ == "__main__":
-    test_add()
-    test_multiply()
-    test_calculate_total()
-    test_apply_discount()
-    test_supermarket_scenario()
-    print("\n🎉 所有测试都通过了！")
+    print("\n" + "="*60)
+    print("RUNNING UNIT TESTS - PRODUCT MODULE")
+    print("="*60 + "\n")
+    
+    test_product_creation()
+    test_product_update_quantity()
+    test_product_is_in_stock()
+    test_product_calculate_total_value()
+    test_product_manager_add_product()
+    test_product_manager_duplicate_product()
+    test_product_manager_get_product()
+    test_product_manager_remove_product()
+    test_product_manager_update_stock()
+    test_product_manager_search_by_category()
+    test_product_manager_low_stock_products()
+    test_product_manager_total_inventory_value()
+    
+    print("\n" + "="*60)
+    print("🎉 ALL UNIT TESTS PASSED!")
+    print("="*60 + "\n")
