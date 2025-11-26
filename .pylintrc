@@ -1,0 +1,42 @@
+[MASTER]
+# Use multiple processes for faster checking
+jobs=1
+
+# Ignore paths
+ignore=.git,__pycache__,.venv,venv,env
+
+[MESSAGES CONTROL]
+# Disable specific warnings
+disable=
+    C0114,  # missing-module-docstring
+    C0115,  # missing-class-docstring
+    C0116,  # missing-function-docstring
+    R0903,  # too-few-public-methods
+    R0913,  # too-many-arguments
+    W0212,  # protected-access
+
+[FORMAT]
+# Maximum line length
+max-line-length=127
+
+# Maximum number of lines in a module
+max-module-lines=1000
+
+[DESIGN]
+# Maximum number of arguments for function/method
+max-args=7
+
+# Maximum number of attributes for a class
+max-attributes=10
+
+[REPORTS]
+# Display only messages
+output-format=text
+
+# Report score
+score=yes
+```
+
+4. **Commit message**：
+```
+ci: add pylint configuration for Python code analysis
