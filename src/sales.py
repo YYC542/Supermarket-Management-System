@@ -126,8 +126,3 @@ class SalesManager:
         if not self.sales:
             return 0
         return self.get_total_revenue() / len(self.sales)
-```
-
-**Commit message**：
-```
-fix: add missing methods to Sale and SalesManager classes
