@@ -246,8 +246,3 @@ if __name__ == "__main__":
     print("\n" + "="*70)
     print("🎉🎉🎉 ALL INTEGRATION TESTS PASSED! 🎉🎉🎉")
     print("="*70 + "\n")
-```
-
-4. **Commit message**：
-```
-test: add integration tests for complete system workflow
