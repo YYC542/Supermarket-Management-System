@@ -310,8 +310,3 @@ if __name__ == "__main__":
     print("\n" + "="*60)
     print("🎉 ALL UNIT TESTS PASSED!")
     print("="*60 + "\n")
-```
-
-4. **Commit message**：
-```
-test: add comprehensive unit tests for sales module
