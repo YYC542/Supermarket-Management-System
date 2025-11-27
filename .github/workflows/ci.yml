@@ -23,8 +23,3 @@ jobs:
       
       - name: Run tests
         run: pytest tests/ -v || true
-```
-
-4. **Commit message**：
-```
-ci: create new minimal CI workflow
